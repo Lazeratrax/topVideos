@@ -1,0 +1,14 @@
+<div class="search">
+
+        <form class="search__form" [formGroup]="form">
+            <input 
+            type="text" 
+            placeholder="Ищем выпуск..." 
+            formControlName="search_string">
+
+            <button mat-button 
+            (click)="submitForm()"
+            color="primary">Поиск</button>
+        </form>
+        
+</div>

@@ -1,0 +1,17 @@
+<article *ngIf="video; else noMessage" class="video-item">
+
+    <mat-card>
+        <div class="video-item__head">
+            <mat-card-title>{{video.snippet.title}}</mat-card-title>
+            <button mat-icon-button color="warn" aria-label="like icon">
+                <mat-icon>{{isFavorite ? 'REMOVE FAVORITE' : 'MAKE FAVORITE'}}</mat-icon>
+            </button>
+        </div>
+        <img mat-card-image src="{{video.snippet.thumbnails.medium.url}}" alt="">
+    </mat-card>
+
+</article>
+
+<ng-template #noMessage>
+    <article class="noMessage"><a href="#">NO DATA</a></article>
+</ng-template>
