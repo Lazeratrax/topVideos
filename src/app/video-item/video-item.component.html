@@ -1,13 +1,23 @@
 <article *ngIf="video; else noMessage" class="video-item">
 
-    <mat-card>
-        <div class="video-item__head">
-            <mat-card-title>{{video.snippet.title}}</mat-card-title>
-            <button mat-icon-button color="warn" aria-label="like icon">
-                <mat-icon>{{isFavorite ? 'REMOVE FAVORITE' : 'MAKE FAVORITE'}}</mat-icon>
+    <mat-card class="video-item-card">
+        <div class="video-item-card__head">
+            <div class="video-item-card__head-content">
+                <mat-card-title class="video-item-card__title">{{video.snippet.title | titleTrimmer}}</mat-card-title>
+
+                <a class="video-item-card__link" href="https://www.youtube.com/watch?v={{video.id.videoId}}">
+                    <fa-icon class="faLink" [icon]="faLink"></fa-icon>
+                    <span>Посмотреть</span>
+                </a>
+
+            </div>
+
+            <button mat-icon-button color="warn" aria-label="like icon" class="video-item-card__btn"
+                (click)="toggleFavorite()">
+                <mat-icon class="{{isFavorite ? 'remove-favorite' : 'make-favorite'}}">favorite</mat-icon>
             </button>
         </div>
-        <img mat-card-image src="{{video.snippet.thumbnails.medium.url}}" alt="">
+        <img mat-card-image class="video-item-card__img" src="{{video.snippet.thumbnails.medium.url}}" alt="">
     </mat-card>
 
 </article>

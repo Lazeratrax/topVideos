@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter} from 'rxjs/operators';
-import { TopVideosService } from '../videos.service';
+import { VideosService } from '../videos.service';
 import { ISearchString } from '../videos.interfaces';
 
 @Component({
@@ -15,7 +14,7 @@ export class SearchComponent implements OnInit {
   public form: FormGroup;
   public search: string = '';
 
-  constructor(private topVideosService: TopVideosService) { }
+  constructor(private videosService: VideosService) { }
 
   public ngOnInit(): void {
     this.form = new FormGroup({
@@ -28,15 +27,6 @@ export class SearchComponent implements OnInit {
       search_string: this.form.value.search_string,
     };
 
-   this.topVideosService.setPageParams(SearchString.search_string, true).pipe(
-      filter(res =>
-        Object.values(res).length == 2),
-      debounceTime(2000),
-      distinctUntilChanged()
-    )
-      .subscribe(
-        params => {
-          console.log('params', params);
-        });
+    this.videosService.setPageParams(SearchString.search_string, '', true);
   }
 }

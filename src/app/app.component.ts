@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { TopVideosService } from './videos.service';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { VideosService } from './videos.service';
 import { IVideoItem } from './videos.interfaces';
 
 @Component({
@@ -14,30 +14,37 @@ export class AppComponent implements OnInit {
   public videos$: Observable<unknown>;
   public searchStringState: string = '';
 
-  constructor(private topVideosService: TopVideosService) { }
+  constructor(private videosService: VideosService) { }
 
   public ngOnInit(): void {
-    this.videos$ = this.topVideosService.getPageParams().pipe(
+    this.videos$ = this.videosService.getPageParams().pipe(
+
       switchMap(({ isFavorite, ...params }) => {
         if (isFavorite) {
-          return of(this.topVideosService.getFavoritesVideos())
+          return of(this.videosService.getFavoritesVideos())
         }
-        return this.topVideosService.getVideosPage(params)
-          .pipe(map((data: any) => this.topVideosService.updateStoredVideos(data.items)))
+        return this.videosService.getVideosPage(params)
+          .pipe(
+            tap((data: any) => this.videosService.updateStoredNextPageToken(data.nextPageToken)),
+            map((data: any) => this.videosService.updateStoredVideos(data.items)),
+          )
       }),
-    );
+    )
   }
 
   public addToFavorites(video: IVideoItem): void {
-    this.topVideosService.addToFavorites(video);
+    this.videosService.addToFavorites(video);
   }
 
   public showFavoriteItems(): void {
-    this.topVideosService.showFavoritesItems();
+    this.videosService.showFavoritesItems();
   }
 
   public showAllItems(): void {
-    this.topVideosService.showAllItems();
+    this.videosService.showAllItems();
+  }
+
+  public loadMoreVideos(): void {
+    this.videosService.loadVideos();
   }
 }
-

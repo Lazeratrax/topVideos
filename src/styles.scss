@@ -1,31 +1,41 @@
 @font-face {
-    font-family: "SourceSansPro", sans-serif;
-    src: url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap") format("truetype");
-  }
-  
-  :root {
-    --soft-blue-two: #5681ee;
-    --pale-grey: #d9dbe3;
-    --page-background: #ffebf8;
-    --slate-grey: #525462;
-    // shadow
-    --dark-8: rgba(18, 21, 35, 0.08);
-    --silver: #c0c3ce;
-  }
-  
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: "Roboto", sans-serif;
-    font-size: 1rem;
-    background-color: var(--page-background);
-  }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  font-family: "SourceSansPro", sans-serif;
+  src: url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap") format("truetype");
+}
+
+:root {
+  --soft-blue-two: #5681ee;
+  --pale-grey: #d9dbe3;
+  --page-background: #ffebf8;
+  --slate-grey: #525462;
+  --items-background: rgb(173, 173, 173);
+  --link: rgb(76, 76, 247);
+  // shadows
+  --dark-8: rgba(18, 21, 35, 0.08);
+  --silver: #c0c3ce;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+body {
+  font-size: 1rem;
+  background-color: var(--page-background);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "SourceSansPro", sans-serif;
+}
 
 input {
   outline: none;

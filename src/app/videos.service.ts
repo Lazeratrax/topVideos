@@ -12,15 +12,17 @@ const DEFAULT_PARAMS: IVideoParams =
   maxResults: Variables.MAX_RESULTS,
   q: Variables.QUERY,
   key: Variables.KEY,
-  isFavorite: Variables.IS_FAVORITE
+  isFavorite: Variables.IS_FAVORITE,
+  pageToken: Variables.PAGE_TOKEN
 };
 
 @Injectable({
   providedIn: 'root',
 })
-export class TopVideosService {
+export class VideosService {
 
   private storedVideos = [];
+  private storedNextPageToken: string;
   private favoritesVideos = this.fetchFavoriteVideosFromLS();
   private videoSubjectSource: BehaviorSubject<IVideoParams> = new BehaviorSubject<IVideoParams>(DEFAULT_PARAMS);
   private fetchFavoriteVideosFromLS() {
@@ -36,19 +38,23 @@ export class TopVideosService {
     return this.videoSubjectSource.asObservable();
   }
 
-  public setPageParams(textFragment: string, isReset?: boolean): any {
+  public setPageParams(textFragment?: string, pageToken?: string, isReset?: boolean): any {
     if (isReset) {
       this.storedVideos = [];
     }
-    return this.videoSubjectSource.next({ ...DEFAULT_PARAMS, q: DEFAULT_PARAMS.q + `intitle:${textFragment}`});
+     return this.videoSubjectSource.next({
+      ...DEFAULT_PARAMS,
+      q: DEFAULT_PARAMS.q + `intitle:${textFragment}`,
+      pageToken: DEFAULT_PARAMS.pageToken + `${pageToken}`
+    });
   }
 
   public getVideosPage(params): Observable<IVideoItem[]> {
     return this.http.get<any>(`${Variables.ADRESS}`, { params });
   }
 
-  public updateStoredVideos(video: IVideoItem[]): IVideoItem[] {
-    return this.storedVideos = this.storedVideos.concat(video);
+  public updateStoredVideos(videos: IVideoItem[]): IVideoItem[] {
+    return this.storedVideos = this.storedVideos.concat(videos);
   }
 
   public addToFavorites(video: IVideoItem): void {
@@ -61,7 +67,7 @@ export class TopVideosService {
     localStorage.setItem(Variables.FAVORITE_VIDEOS_LS_KEY, JSON.stringify(this.favoritesVideos));
   }
 
-  public isFavorite(video: IVideoItem): IVideoItem {
+  public isFavorite(video: IVideoItem): boolean {
     return this.favoritesVideos.some(v => v.id.videoId === video.id.videoId);
   }
 
@@ -77,6 +83,15 @@ export class TopVideosService {
 
   public getFavoritesVideos(): IVideoItem[] {
     return this.favoritesVideos;
+  }
+
+  public updateStoredNextPageToken(nextPageToken): void {
+    this.storedNextPageToken = nextPageToken;
+  }
+
+  public loadVideos(): void {
+    let token = this.storedNextPageToken;
+    this.setPageParams('', token);
   }
 }
 

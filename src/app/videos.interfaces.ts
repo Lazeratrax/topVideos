@@ -11,6 +11,7 @@ export interface IVideoParams {
   q: string;
   key: string;
   isFavorite: boolean;
+  pageToken: string;
 }
 
 export interface IVideosResponseString {

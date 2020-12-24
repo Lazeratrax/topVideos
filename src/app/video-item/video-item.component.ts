@@ -5,7 +5,12 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { TopVideosService } from '../videos.service';
+
+import {
+  faLink, IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
+
+import { VideosService } from '../videos.service';
 import { IVideoItem } from '../videos.interfaces';
 
 @Component({
@@ -15,16 +20,19 @@ import { IVideoItem } from '../videos.interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VideoItemComponent {
+
+  public faLink: IconDefinition = faLink;
+  
   @Input() video: IVideoItem;
   @Output() addToFavorites = new EventEmitter<IVideoItem>();
 
-  public constructor(private topVideosService: TopVideosService) { }
+  public constructor(private videosService: VideosService) { }
 
   public toggleFavorite(): void {
     this.addToFavorites.emit(this.video);
   }
 
-  get isFavorite(): IVideoItem {
-    return this.topVideosService.isFavorite(this.video);
+  get isFavorite(): boolean {
+    return this.videosService.isFavorite(this.video);
   }
 }
