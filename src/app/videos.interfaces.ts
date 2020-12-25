@@ -6,7 +6,6 @@ export interface ISearchString {
 export interface IVideoParams {
   channelId: string;
   part: string;
-  chart: string;
   maxResults: number;
   q: string;
   key: string;

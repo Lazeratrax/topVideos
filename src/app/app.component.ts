@@ -21,15 +21,17 @@ export class AppComponent implements OnInit {
 
       switchMap(({ isFavorite, ...params }) => {
         if (isFavorite) {
-          return of(this.videosService.getFavoritesVideos())
+          return of(this.videosService.getFavoritesVideos());
         }
         return this.videosService.getVideosPage(params)
           .pipe(
-            tap((data: any) => this.videosService.updateStoredNextPageToken(data.nextPageToken)),
+            tap((data: any) => {
+            this.videosService.updateStoredNextPageToken(data.nextPageToken);
+           }),
             map((data: any) => this.videosService.updateStoredVideos(data.items)),
-          )
+          );
       }),
-    )
+    );
   }
 
   public addToFavorites(video: IVideoItem): void {

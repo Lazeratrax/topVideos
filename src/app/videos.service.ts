@@ -8,7 +8,6 @@ const DEFAULT_PARAMS: IVideoParams =
 {
   channelId: Variables.CHANNEL_ID,
   part: Variables.PART,
-  chart: Variables.CHART,
   maxResults: Variables.MAX_RESULTS,
   q: Variables.QUERY,
   key: Variables.KEY,
@@ -25,10 +24,10 @@ export class VideosService {
   private storedNextPageToken: string;
   private favoritesVideos = this.fetchFavoriteVideosFromLS();
   private videoSubjectSource: BehaviorSubject<IVideoParams> = new BehaviorSubject<IVideoParams>(DEFAULT_PARAMS);
-  private fetchFavoriteVideosFromLS() {
+  private fetchFavoriteVideosFromLS(): any {
     try {
       const videos = localStorage.getItem(Variables.FAVORITE_VIDEOS_LS_KEY);
-      return videos ? JSON.parse(videos) : []
+      return videos ? JSON.parse(videos) : [];
     } catch { }
   }
 
@@ -42,11 +41,24 @@ export class VideosService {
     if (isReset) {
       this.storedVideos = [];
     }
-     return this.videoSubjectSource.next({
+    let query = ``;
+    if (textFragment) {
+      query = `intitle:${textFragment}`;
+    }
+    return this.videoSubjectSource.next({
       ...DEFAULT_PARAMS,
-      q: DEFAULT_PARAMS.q + `intitle:${textFragment}`,
+      q: DEFAULT_PARAMS.q + `${query}`,
       pageToken: DEFAULT_PARAMS.pageToken + `${pageToken}`
     });
+  }
+
+  public updateStoredNextPageToken(nextPageToken): void {
+    this.storedNextPageToken = nextPageToken;
+  }
+
+  public loadVideos(): void {
+    const token = this.storedNextPageToken;
+    this.setPageParams('', token);
   }
 
   public getVideosPage(params): Observable<IVideoItem[]> {
@@ -84,14 +96,6 @@ export class VideosService {
   public getFavoritesVideos(): IVideoItem[] {
     return this.favoritesVideos;
   }
-
-  public updateStoredNextPageToken(nextPageToken): void {
-    this.storedNextPageToken = nextPageToken;
-  }
-
-  public loadVideos(): void {
-    let token = this.storedNextPageToken;
-    this.setPageParams('', token);
-  }
 }
+
 
