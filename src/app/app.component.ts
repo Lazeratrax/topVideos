@@ -26,8 +26,8 @@ export class AppComponent implements OnInit {
         return this.videosService.getVideosPage(params)
           .pipe(
             tap((data: any) => {
-            this.videosService.updateStoredNextPageToken(data.nextPageToken);
-           }),
+              this.videosService.updateStoredNextPageToken(data.nextPageToken);
+            }),
             map((data: any) => this.videosService.updateStoredVideos(data.items)),
           );
       }),
@@ -48,5 +48,9 @@ export class AppComponent implements OnInit {
 
   public loadMoreVideos(): void {
     this.videosService.loadVideos();
+  }
+
+  public canWatchMore(): boolean {
+    return this.videosService.toggleToWatchMoreButton();
   }
 }

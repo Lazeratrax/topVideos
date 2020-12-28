@@ -3,13 +3,14 @@
   <div class="list-videos">
     <button mat-button color="primary" (click)="showFavoriteItems()">see favorite</button>
     <button mat-button color="primary" (click)="showAllItems()">see all</button>
-    
+
     <app-search></app-search>
 
     <app-video-item *ngFor="let video of (videos$ | async)" [video]="video" (addToFavorites)="addToFavorites($event)">
     </app-video-item>
 
-    <button mat-button color="accent" (click)="loadMoreVideos()">LOAD MORE</button>
+    <button mat-button color="accent" *ngIf="canWatchMore()"
+      (click)="loadMoreVideos()">загрузить еще</button>
   </div>
 
 </div>

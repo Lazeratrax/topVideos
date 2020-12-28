@@ -19,7 +19,6 @@ const DEFAULT_PARAMS: IVideoParams =
   providedIn: 'root',
 })
 export class VideosService {
-
   private storedVideos = [];
   private storedNextPageToken: string;
   private favoritesVideos = this.fetchFavoriteVideosFromLS();
@@ -96,6 +95,15 @@ export class VideosService {
   public getFavoritesVideos(): IVideoItem[] {
     return this.favoritesVideos;
   }
+
+  public toggleToWatchMoreButton(): boolean {
+    const situation = this.videoSubjectSource.getValue();
+    if (situation.q.length > 0) {
+      return false;
+    }
+    return true;
+  }
 }
+
 
 
