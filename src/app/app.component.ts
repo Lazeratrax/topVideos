@@ -50,7 +50,5 @@ export class AppComponent implements OnInit {
     this.videosService.loadVideos();
   }
 
-  public canWatchMore(): boolean {
-    return this.videosService.toggleToWatchMoreButton();
-  }
+  get canLoadMore(): boolean { return this.videosService.canLoadMore; }
 }

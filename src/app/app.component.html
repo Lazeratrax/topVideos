@@ -9,7 +9,7 @@
     <app-video-item *ngFor="let video of (videos$ | async)" [video]="video" (addToFavorites)="addToFavorites($event)">
     </app-video-item>
 
-    <button mat-button color="accent" *ngIf="canWatchMore()"
+    <button mat-button color="accent" *ngIf="canLoadMore"
       (click)="loadMoreVideos()">загрузить еще</button>
   </div>
 

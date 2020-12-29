@@ -19,6 +19,8 @@ const DEFAULT_PARAMS: IVideoParams =
   providedIn: 'root',
 })
 export class VideosService {
+  public canLoadMore: boolean;
+
   private storedVideos = [];
   private storedNextPageToken: string;
   private favoritesVideos = this.fetchFavoriteVideosFromLS();
@@ -61,6 +63,7 @@ export class VideosService {
   }
 
   public getVideosPage(params): Observable<IVideoItem[]> {
+    this.canLoadMore = this.videoSubjectSource.getValue().q.length <= 0;
     return this.http.get<any>(`${Variables.ADRESS}`, { params });
   }
 
@@ -84,6 +87,7 @@ export class VideosService {
 
   public showFavoritesItems(): void {
     this.storedVideos = [];
+    this.canLoadMore = false;
     this.videoSubjectSource.next({ ...DEFAULT_PARAMS, isFavorite: true });
   }
 
@@ -95,15 +99,9 @@ export class VideosService {
   public getFavoritesVideos(): IVideoItem[] {
     return this.favoritesVideos;
   }
-
-  public toggleToWatchMoreButton(): boolean {
-    const situation = this.videoSubjectSource.getValue();
-    if (situation.q.length > 0) {
-      return false;
-    }
-    return true;
-  }
 }
+
+
 
 
 

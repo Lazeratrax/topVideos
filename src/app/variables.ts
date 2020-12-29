@@ -6,7 +6,7 @@ export const ADRESS: string = `https://www.googleapis.com/youtube/v3/search`;
 
 // acc2
 // AIzaSyBS_lpTqKH6Mx_jUevqVlmCz6YOw0JsntE
-export const API_KEY: string = `AIzaSyBS_lpTqKH6Mx_jUevqVlmCz6YOw0JsntE`;
+export const API_KEY: string = `AIzaSyAftVIWoy59uJFoPhdQ9JSLgU4AP5D4HvM`;
 
 export const PAGE_SIZE: number = 10;
 

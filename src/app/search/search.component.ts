@@ -23,8 +23,8 @@ export class SearchComponent implements OnInit {
   }
 
   public submitForm(): void {
-    let SearchString: ISearchString = {
-      search_string: this.form.value.search_string,
+    const SearchString: ISearchString = {
+      search_string: this.form.value.search_string.trim().toLowerCase(),
     };
 
     this.videosService.setPageParams(SearchString.search_string, '', true);
